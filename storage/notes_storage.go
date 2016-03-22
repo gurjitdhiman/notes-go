@@ -25,7 +25,7 @@ func (ns *NotesStorageDB) FindAllNotes() ([]models.Note, error) {
 	notes := []models.Note{}
 
 	// Find all notes from notes table.
-	rows, err := ns.DB.Query("SELECT id,title,content,priority,created_at FROM notes")
+	rows, err := ns.DB.Query("SELECT id,title,content,priority,created_at FROM notes ORDER BY created_at DESC")
 	if err != nil {
 		return notes, err
 	}

@@ -39,7 +39,7 @@ func main() {
 	server := negroni.Classic()
 
 	notesStorage := &storage.NotesStorageDB{DB: DB}
-	notesController := &controllers.NotesController{Storage: notesStorage}
+	notesController := &controllers.NotesController{Storage: notesStorage} //pass noteStorageDB object reference  to noteStorage interface
 
 	router.GET("/", homeHandler)
 	router.GET("/notes", notesController.IndexHandler)

@@ -38,11 +38,16 @@ func (nc *NotesController) CreateHandler(res http.ResponseWriter, req *http.Requ
 	// Read note properties.
 	title := req.FormValue("title")
 	content := req.FormValue("content")
-	priority := req.FormValue("priority")
-
+	priorityStr := req.FormValue("priority")
+	priority, err := strconv.ParseInt(priorityStr, 10, 64)
+	if err != nil {
+		res.WriteHeader(500)
+		res.Write([]byte(err.Error()))
+		return
+	}
 	// Persist note.
 	noteData := models.NewNote(title, content, priority)
-	err := nc.Storage.InsertNote(noteData)
+	err = nc.Storage.InsertNote(noteData)
 	if err != nil {
 		res.WriteHeader(500)
 		res.Write([]byte(err.Error()))
@@ -73,7 +78,13 @@ func (nc *NotesController) UpdateHandler(res http.ResponseWriter, req *http.Requ
 	// Read note properties.
 	title := req.FormValue("title")
 	content := req.FormValue("content")
-	priority := req.FormValue("priority")
+	priorityStr := req.FormValue("priority")
+	priority, err := strconv.ParseInt(priorityStr, 10, 64)
+	if err != nil {
+		res.WriteHeader(500)
+		res.Write([]byte(err.Error()))
+		return
+	}
 	noteData := models.NewNote(title, content, priority)
 
 	// Update note values in storage.
